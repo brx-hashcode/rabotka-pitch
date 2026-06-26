@@ -1,0 +1,15 @@
+{
+  "name": "Rabotka",
+  "short_name": "Rabotka",
+  "description": "La place de marché du travail, sur WhatsApp.",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#04301A",
+  "theme_color": "#04301A",
+  "icons": [
+    { "src": "/assets/favicon/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/favicon/favicon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/favicon/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
