@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green:#16C152; --green-2:#0FAE46; --green-deep:#0A7C3C; --green-dark:#063D22; --green-darker:#04301A;
+    --green-light:#8FEFB3; --tint:#EAF7ED; --tint-2:#DCF1E1; --ink:#0E1A13; --muted:#5C6B61;
+    --paper:#FBFCFA; --line:#E2EBE4; --card:#FFFFFF;
+    --pad-x:120px; --pad-y:86px;
+    --t-title:74px; --t-h:56px; --t-sub:34px; --t-body:26px; --t-eye:23px;
+  }
+  .eye { display:flex; align-items:center; gap:14px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:var(--t-eye); letter-spacing:.13em; text-transform:uppercase; color:var(--green-deep); }
+  .eye span { width:30px; height:3px; background:var(--green); border-radius:2px; display:block; }
+  .eye.on-dark { color:var(--green-light); }
+  .eye.on-dark span { background:var(--green-light); }
+  .chev { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 24L24 0l24 24M0 48L24 24l24 24' fill='none' stroke='%23ffffff' stroke-width='1.1'/%3E%3C/svg%3E"); background-size:48px 48px; }
+
+  /* --- Entrance animations (deck-stage pattern) ---------------------------
+     Base style = the visible end-state, so print / reduced-motion show the
+     final layout. We only animate FROM a hidden state on the active slide,
+     gated on prefers-reduced-motion. Stagger via --d (delay index). */
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes dc-up   { from { opacity:0; transform:translateY(34px); } to { opacity:1; transform:none; } }
+    @keyframes dc-fade { from { opacity:0; } to { opacity:1; } }
+    @keyframes dc-rise { from { opacity:0; transform:translateY(26px) scale(.98); } to { opacity:1; transform:none; } }
+    @keyframes dc-inx  { from { opacity:0; transform:translateX(-30px); } to { opacity:1; transform:none; } }
+    @keyframes dc-bars { from { opacity:0; transform:scaleY(.04); } to { opacity:1; transform:none; } }
+    @keyframes dc-draw { from { stroke-dashoffset:560; opacity:0; } 20% { opacity:.55; } to { stroke-dashoffset:0; opacity:.55; } }
+    @keyframes dc-grow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+    @keyframes dc-pop  { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+
+    [data-deck-active] .anim {
+      opacity:0;
+      animation:dc-up .62s cubic-bezier(.2,.8,.2,1) both;
+      animation-delay:calc(var(--d, 0) * 95ms + 90ms);
+    }
+    [data-deck-active] .anim-fade { opacity:0; animation:dc-fade .7s ease both;  animation-delay:calc(var(--d,0)*95ms + 90ms); }
+    [data-deck-active] .anim-rise { opacity:0; animation:dc-rise .66s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--d,0)*95ms + 90ms); }
+    [data-deck-active] .anim-inx  { opacity:0; animation:dc-inx .58s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--d,0)*70ms + 120ms); }
+    [data-deck-active] .anim-bar  { opacity:0; transform-origin:bottom; animation:dc-bars .7s cubic-bezier(.2,.85,.25,1) both; animation-delay:calc(var(--d,0)*110ms + 160ms); }
+    [data-deck-active] .anim-draw { stroke-dasharray:560; stroke-dashoffset:560; opacity:0; animation:dc-draw .85s cubic-bezier(.4,.6,.3,1) both; animation-delay:calc(var(--d,0)*90ms + 300ms); }
+    [data-deck-active] .anim-grow { transform:scaleX(0); transform-origin:left center; animation:dc-grow .5s cubic-bezier(.4,.6,.3,1) both; animation-delay:900ms; }
+    [data-deck-active] .anim-pop  { opacity:0; animation:dc-pop .3s ease both; animation-delay:1340ms; }
+  }
+</style>
+<script src="image-slot.js"></script>
+</helmet>
+
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+<section data-label="Couverture" data-screen-label="01" data-speaker-notes="Rabotka : la plateforme intelligente qui rend le travail visible, fiable et accessible. On part de WhatsApp, le canal déjà utilisé au quotidien. Parce que chaque personne mérite une opportunité." style="display:flex; background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink)">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:78px 84px">
+    <div style="display:flex; align-items:center; gap:16px">
+      <img src="assets/rabotka-logo.png" alt="Rabotka" style="width:60px; height:60px; object-fit:contain">
+      <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:32px; letter-spacing:-.01em">Rabotka</span>
+    </div>
+    <div style="max-width:780px">
+      <div class="eye anim" style="--d:0"><span></span>Plateforme WhatsApp intelligente</div>
+      <h1 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-title); line-height:1.04; letter-spacing:-.025em; margin:28px 0 30px">La plateforme intelligente qui rend le travail <span style="color:var(--green)">visible, fiable et accessible.</span></h1>
+      <p class="anim" style="--d:2; font-size:31px; line-height:1.4; color:var(--ink); font-weight:600; max-width:640px">« Parce que chaque personne mérite une opportunité. »</p>
+    </div>
+    <div style="display:flex; align-items:center; gap:30px; font-size:22px; color:var(--muted)">
+      <span>Brazzaville · République du Congo</span>
+    </div>
+  </div>
+  <div class="anim-fade" style="--d:1; width:41%; position:relative; overflow:hidden">
+    <image-slot id="cover-photo" style="width:100%; height:100%; display:block" shape="rect" placeholder="Glisser une photo — travailleur·se à Brazzaville"></image-slot>
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(6,61,34,0) 38%, rgba(4,40,22,.62) 100%); pointer-events:none"></div>
+  </div>
+</section>
+
+<section data-label="Le problème" data-screen-label="02" data-speaker-notes="Le marché du travail informel est actif mais désorganisé. Les travailleurs manquent de visibilité ; les employeurs manquent de confiance. Le problème n'est pas l'absence de travailleurs ou d'employeurs — c'est l'absence d'un système qui les relie en confiance." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>01 — Le problème</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 8px; max-width:1180px">Un marché actif, mais invisible</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:980px">Les services informels existent déjà partout — ménage, garde d'enfants, réparation, livraison — mais circulent dans des réseaux fermés. Tout le monde y perd.</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:48px; flex:1">
+    <div class="anim-rise" style="--d:3; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:44px 46px; display:flex; flex-direction:column">
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:28px"><span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; color:var(--green-deep)">Côté travailleurs</span></div>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:22px">
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Peu de visibilité en dehors du cercle personnel</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Aucun profil professionnel simple et vérifiable</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Des opportunités perdues, faute de canal fiable</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Une réputation impossible à construire dans la durée</span></li>
+      </ul>
+    </div>
+    <div class="anim-rise" style="--d:4; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:44px 46px; display:flex; flex-direction:column">
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:28px"><span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; color:var(--green-deep)">Côté employeurs</span></div>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:22px">
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Une recherche longue, incertaine et stressante</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Peu d'informations sur l'identité et l'expérience</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Aucun historique fiable, aucun mécanisme de responsabilité</span></li>
+        <li style="display:flex; gap:16px; align-items:flex-start"><span style="height:35px; display:flex; align-items:center; flex-shrink:0"><span style="width:11px; height:11px; background:var(--green); transform:rotate(45deg)"></span></span><span style="font-size:25px; line-height:1.4">Des agences classiques trop chères pour de petits besoins</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="anim" style="--d:5; margin-top:36px; background:var(--green-dark); border-radius:20px; padding:30px 40px; display:flex; align-items:center; gap:22px">
+    <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:21px; letter-spacing:.1em; text-transform:uppercase; color:var(--green-light); white-space:nowrap">Enjeu central</span>
+    <span style="width:1px; height:34px; background:rgba(255,255,255,.2)"></span>
+    <span style="font-size:27px; color:#fff; line-height:1.35">Le problème n'est ni l'absence de travailleurs, ni celle d'employeurs — c'est l'absence d'un système simple, vérifié et organisé pour qu'ils se rencontrent en confiance.</span>
+  </div>
+</section>
+
+<section data-label="L'opportunité" data-screen-label="03" data-speaker-notes="Brazzaville est un terrain de lancement logique : WhatsApp y est le canal numéro un, le besoin de services informels est massif, la densité urbaine est suffisante, et aucun acteur ne structure ce marché. C'est une porte d'entrée vers d'autres villes africaines." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); display:flex">
+  <div style="flex:1; padding:var(--pad-y) 70px var(--pad-y) var(--pad-x); display:flex; flex-direction:column; justify-content:center">
+    <div class="eye anim" style="--d:0"><span></span>02 — L'opportunité</div>
+    <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 14px; max-width:760px">Brazzaville, point de départ stratégique</h2>
+    <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:680px; margin-bottom:42px">Une ville qui réunit toutes les conditions pour faire émerger une plateforme de référence.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:26px; max-width:760px">
+      <div class="anim" style="--d:3; border-top:3px solid var(--green); padding-top:20px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px">WhatsApp partout</div><div style="font-size:21px; color:var(--muted); line-height:1.4">Le canal numéro un, déjà dans les habitudes quotidiennes.</div></div>
+      <div class="anim" style="--d:4; border-top:3px solid var(--green); padding-top:20px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px">Besoin réel</div><div style="font-size:21px; color:var(--muted); line-height:1.4">Une demande quotidienne et forte de services locaux.</div></div>
+      <div class="anim" style="--d:5; border-top:3px solid var(--green); padding-top:20px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px">Aucun acteur structurant</div><div style="font-size:21px; color:var(--muted); line-height:1.4">Pas de plateforme avec vérification et réputation.</div></div>
+      <div class="anim" style="--d:6; border-top:3px solid var(--green); padding-top:20px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px">Tremplin régional</div><div style="font-size:21px; color:var(--muted); line-height:1.4">Un modèle réplicable vers d'autres villes africaines.</div></div>
+    </div>
+  </div>
+  <div class="anim-fade" style="--d:1; width:37%; position:relative; overflow:hidden">
+    <image-slot id="brazza-photo" style="width:100%; height:100%; display:block" shape="rect" placeholder="Glisser une photo — Brazzaville / scène urbaine"></image-slot>
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(6,61,34,0) 50%, rgba(4,40,22,.5) 100%); pointer-events:none"></div>
+    <div style="position:absolute; left:34px; bottom:34px; background:rgba(255,255,255,.95); border-radius:16px; padding:18px 24px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; color:var(--ink)">Brazzaville</div><div style="font-size:20px; color:var(--muted); margin-top:2px">République du Congo · marché pilote</div></div>
+  </div>
+</section>
+
+<section data-label="La solution" data-screen-label="04" data-speaker-notes="Rabotka transforme WhatsApp — un canal familier — en une place de marché structurée, vérifiée et intelligente. Pas d'application à apprendre : on s'inscrit, on est vérifié, et tout se passe dans la conversation." style="position:relative; background:var(--green-darker); font-family:Manrope,sans-serif; color:#fff; display:flex; overflow:hidden">
+  <div class="chev" style="position:absolute; inset:0; opacity:.06; pointer-events:none"></div>
+  <div style="position:absolute; top:-260px; right:-160px; width:760px; height:760px; border-radius:50%; background:radial-gradient(circle, rgba(22,193,82,.35), transparent 62%); pointer-events:none"></div>
+  <div style="flex:1; padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; max-width:1320px">
+    <div class="eye on-dark anim" style="--d:0"><span></span>03 — La solution</div>
+    <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:64px; line-height:1.05; letter-spacing:-.025em; margin:26px 0 28px">WhatsApp devient une <span style="color:var(--green-light)">place de marché.</span></h2>
+    <p class="anim" style="--d:2; font-size:30px; line-height:1.45; color:rgba(255,255,255,.82); max-width:720px">Rabotka transforme WhatsApp en une place de marché structurée, vérifiée et intelligente pour trouver du travail — ou recruter une aide de confiance.</p>
+    <div style="display:flex; gap:14px; margin-top:42px; flex-wrap:wrap">
+      <span class="anim" style="--d:3; font-size:22px; font-weight:600; padding:12px 22px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16)">Pas d'app à installer</span>
+      <span class="anim" style="--d:4; font-size:22px; font-weight:600; padding:12px 22px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16)">Profils vérifiés</span>
+      <span class="anim" style="--d:5; font-size:22px; font-weight:600; padding:12px 22px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16)">Recommandations intelligentes</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Comment ça marche" data-screen-label="05" data-speaker-notes="Deux parcours symétriques et simples. Le travailleur : inscription, vérification, recommandations, mission, évaluation. L'employeur : inscription, publication, profils recommandés, contact débloqué, évaluation. Rabotka cache toute la complexité derrière la conversation." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>04 — Comment ça marche</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">Deux parcours, une mécanique simple</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:900px">La même logique des deux côtés : s'inscrire, se faire vérifier, se rencontrer en confiance, puis s'évaluer.</p>
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:54px; margin-top:10px">
+    <div class="anim" style="--d:3">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px; color:var(--green-deep); margin-bottom:22px">Le travailleur</div>
+      <div style="display:flex; align-items:stretch; gap:0">
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">01</div><div style="font-size:23px; font-weight:600">Inscription</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">02</div><div style="font-size:23px; font-weight:600">Vérification</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">03</div><div style="font-size:23px; font-weight:600">Recommandations</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">04</div><div style="font-size:23px; font-weight:600">Mission</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--green-dark); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green-light); margin-bottom:8px">05</div><div style="font-size:23px; font-weight:600; color:#fff">Évaluation</div></div>
+      </div>
+    </div>
+    <div class="anim" style="--d:4">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px; color:var(--green-deep); margin-bottom:22px">L'employeur</div>
+      <div style="display:flex; align-items:stretch; gap:0">
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">01</div><div style="font-size:23px; font-weight:600">Inscription</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">02</div><div style="font-size:23px; font-weight:600">Publication de mission</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">03</div><div style="font-size:23px; font-weight:600">Profils recommandés</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green); margin-bottom:8px">04</div><div style="font-size:23px; font-weight:600">Contact débloqué</div></div>
+        <div style="display:flex; align-items:center; padding:0 14px"><span style="width:13px; height:13px; border-top:3px solid var(--green); border-right:3px solid var(--green); transform:rotate(45deg)"></span></div>
+        <div style="flex:1; background:var(--green-dark); border-radius:18px; padding:24px 22px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green-light); margin-bottom:8px">05</div><div style="font-size:23px; font-weight:600; color:#fff">Évaluation</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Les 4 piliers" data-screen-label="06" data-speaker-notes="Quatre piliers portent le modèle. Accessibilité : WhatsApp. Confiance : profils vérifiés. Pertinence : recommandations intelligentes. Responsabilité : évaluations, historique et score de fiabilité." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>05 — Le modèle</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">Quatre piliers</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:900px">Ce qui transforme un groupe WhatsApp informel en une véritable plateforme de confiance.</p>
+  <div style="flex:1; display:grid; grid-template-columns:repeat(4,1fr); gap:26px; margin-top:46px">
+    <div class="anim-rise" style="--d:3; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:38px 32px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; color:var(--green); letter-spacing:-.02em">01</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; margin:auto 0 14px">Accessibilité</div>
+      <div style="font-size:23px; color:var(--muted); line-height:1.42">Tout passe par WhatsApp — un canal familier, léger, déjà présent dans les habitudes.</div>
+    </div>
+    <div class="anim-rise" style="--d:4; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:38px 32px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; color:var(--green); letter-spacing:-.02em">02</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; margin:auto 0 14px">Confiance</div>
+      <div style="font-size:23px; color:var(--muted); line-height:1.42">Chaque profil est vérifié avant de pouvoir utiliser pleinement la plateforme.</div>
+    </div>
+    <div class="anim-rise" style="--d:5; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:38px 32px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; color:var(--green); letter-spacing:-.02em">03</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; margin:auto 0 14px">Pertinence</div>
+      <div style="font-size:23px; color:var(--muted); line-height:1.42">Les recommandations tiennent compte des compétences, de la localisation et du timing.</div>
+    </div>
+    <div class="anim-rise" style="--d:6; background:var(--green-dark); border-radius:24px; padding:38px 32px; display:flex; flex-direction:column; position:relative; overflow:hidden">
+      <div class="chev" style="position:absolute; inset:0; opacity:.07; pointer-events:none"></div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; color:var(--green-light); letter-spacing:-.02em; position:relative">04</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; margin:auto 0 14px; color:#fff; position:relative">Responsabilité</div>
+      <div style="font-size:23px; color:rgba(255,255,255,.82); line-height:1.42; position:relative">Évaluations, historique et score de fiabilité récompensent les comportements sérieux.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="InterestGraph" data-screen-label="07" data-speaker-notes="InterestGraph est le moteur de recommandation. Il apprend des comportements : offres vues, sauvegardées, ignorées, candidatures, localisation, urgence. Plus qu'un filtre, il évolue dans le temps. La donnée d'usage devient un avantage compétitif difficile à copier." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>06 — Le moteur intelligent</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">InterestGraph apprend des comportements</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:980px">Chaque action devient un signal. Le moteur comprend ce que chaque utilisateur recherche vraiment — et s'améliore avec le temps.</p>
+  <div style="flex:1; position:relative; margin-top:18px">
+    <svg viewBox="0 0 1000 478" preserveAspectRatio="none" style="position:absolute; left:0; top:24px; width:100%; height:478px">
+      <path class="anim-draw" style="--d:0" d="M240,32 C400,32 380,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+      <path class="anim-draw" style="--d:1" d="M240,110 C400,110 400,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+      <path class="anim-draw" style="--d:2" d="M240,188 C410,188 430,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+      <path class="anim-draw" style="--d:3" d="M240,266 C410,266 430,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+      <path class="anim-draw" style="--d:4" d="M240,344 C400,344 400,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+      <path class="anim-draw" style="--d:5" d="M240,422 C400,422 380,219 478,219" fill="none" stroke="#16C152" stroke-width="1.3" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div style="position:absolute; left:calc(47.8% + 210px); right:28%; top:243px; height:3px; display:flex; align-items:center; transform:translateY(-1.5px)">
+      <div class="anim-grow" style="flex:1; height:3px; background:var(--green)"></div>
+      <div class="anim-pop" style="width:0; height:0; border-top:9px solid transparent; border-bottom:9px solid transparent; border-left:14px solid var(--green); margin-left:-1px"></div>
+    </div>
+    <div style="position:absolute; left:0; top:24px; display:flex; flex-direction:column; gap:14px; width:24%">
+      <div class="anim-inx" style="--d:0; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Offres vues</div>
+      <div class="anim-inx" style="--d:1; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Sauvegardées</div>
+      <div class="anim-inx" style="--d:2; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Ignorées</div>
+      <div class="anim-inx" style="--d:3; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Candidatures</div>
+      <div class="anim-inx" style="--d:4; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Localisation</div>
+      <div class="anim-inx" style="--d:5; background:var(--tint); border-radius:14px; height:64px; display:flex; align-items:center; padding:0 20px; font-size:22px; font-weight:600">Urgence</div>
+    </div>
+    <div class="anim-fade" style="--d:6; position:absolute; left:47.8%; top:138px; width:210px; height:210px; border-radius:50%; background:var(--green-dark); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; box-shadow:0 24px 60px rgba(6,61,34,.32)">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:27px; line-height:1.1">Interest<br>Graph</div>
+      <div style="font-size:17px; color:var(--green-light); margin-top:8px; padding:0 24px">Machine learning</div>
+    </div>
+    <div class="anim-rise" style="--d:7; position:absolute; right:0; top:168px; width:28%; background:var(--green); color:#fff; border-radius:20px; padding:30px 30px; box-shadow:0 24px 60px rgba(22,193,82,.3)">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:27px; margin-bottom:10px">Recommandations pertinentes</div>
+      <div style="font-size:21px; line-height:1.4; color:rgba(255,255,255,.92)">Moins de bruit, plus d'offres adaptées — et plus de contacts débloqués.</div>
+    </div>
+  </div>
+  <div class="anim" style="--d:8; margin-top:18px; display:flex; align-items:center; gap:16px; background:var(--green-dark); border-radius:18px; padding:24px 36px">
+    <span style="font-size:25px; color:#fff; line-height:1.35"><strong style="color:var(--green-light)">La donnée d'usage devient un avantage compétitif</strong> — impossible à reproduire avec de simples groupes WhatsApp.</span>
+  </div>
+</section>
+
+<section data-label="Business model" data-screen-label="08" data-speaker-notes="Un modèle payer quand il y a de la valeur. L'inscription, la découverte et la publication restent gratuites. On monétise quand la mise en relation devient utile : déblocage de contact, crédit de bienvenue, publicité ciblée — puis des revenus B2B futurs : comptes entreprises, recrutements groupés, partenariats institutionnels." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>07 — Modèle économique</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">Payer quand il y a de la valeur</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:940px">S'inscrire, découvrir et publier reste gratuit. La monétisation arrive au moment où la mise en relation devient réellement utile.</p>
+  <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:34px; margin-top:40px">
+    <div class="anim-rise" style="--d:3; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:23px; color:var(--green-deep); margin-bottom:20px; letter-spacing:.04em">REVENUS AUJOURD'HUI</div>
+      <div style="display:flex; flex-direction:column; gap:18px; flex:1">
+        <div style="background:var(--green); color:#fff; border-radius:20px; padding:30px 32px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:8px">Déblocage de contact</div><div style="font-size:22px; color:rgba(255,255,255,.9); line-height:1.4">Frais faible, payé quand les deux parties veulent avancer vers une vraie mission. Le cœur du modèle.</div></div>
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 32px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px; margin-bottom:6px">Crédit de bienvenue</div><div style="font-size:22px; color:var(--muted); line-height:1.4">Faire découvrir le service sans bloquer le premier usage.</div></div>
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 32px"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px; margin-bottom:6px">Publicité ciblée</div><div style="font-size:22px; color:var(--muted); line-height:1.4">Des partenaires locaux s'adressent à des audiences utiles : travailleurs, employeurs, PME.</div></div>
+      </div>
+    </div>
+    <div class="anim-rise" style="--d:4; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:23px; color:var(--green-deep); margin-bottom:20px; letter-spacing:.04em">REVENUS B2B — DEMAIN</div>
+      <div style="background:var(--green-dark); border-radius:20px; padding:34px 36px; flex:1; display:flex; flex-direction:column; gap:20px; position:relative; overflow:hidden">
+        <div class="chev" style="position:absolute; inset:0; opacity:.06; pointer-events:none"></div>
+        <div style="position:relative; display:flex; gap:16px; align-items:flex-start; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,.12)"><span style="width:10px; height:10px; background:var(--green-light); transform:rotate(45deg); margin-top:10px; flex-shrink:0"></span><div><div style="color:#fff; font-weight:700; font-size:25px">Comptes entreprises</div><div style="color:rgba(255,255,255,.74); font-size:21px; margin-top:3px">Tableaux de bord pour employeurs récurrents.</div></div></div>
+        <div style="position:relative; display:flex; gap:16px; align-items:flex-start; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,.12)"><span style="width:10px; height:10px; background:var(--green-light); transform:rotate(45deg); margin-top:10px; flex-shrink:0"></span><div><div style="color:#fff; font-weight:700; font-size:25px">Recrutements groupés</div><div style="color:rgba(255,255,255,.74); font-size:21px; margin-top:3px">Plusieurs profils mobilisés pour un même besoin.</div></div></div>
+        <div style="position:relative; display:flex; gap:16px; align-items:flex-start"><span style="width:10px; height:10px; background:var(--green-light); transform:rotate(45deg); margin-top:10px; flex-shrink:0"></span><div><div style="color:#fff; font-weight:700; font-size:25px">Partenariats institutionnels</div><div style="color:rgba(255,255,255,.74); font-size:21px; margin-top:3px">PME, écoles, ONG et programmes d'insertion.</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim" style="--d:5; margin-top:30px; display:flex; gap:36px; font-size:22px; color:var(--muted)">
+    <span style="display:flex; align-items:center; gap:10px"><span style="width:9px; height:9px; border-radius:50%; background:var(--green)"></span>Pas d'abonnement obligatoire</span>
+    <span style="display:flex; align-items:center; gap:10px"><span style="width:9px; height:9px; border-radius:50%; background:var(--green)"></span>Coût lié à une action concrète</span>
+    <span style="display:flex; align-items:center; gap:10px"><span style="width:9px; height:9px; border-radius:50%; background:var(--green)"></span>Adapté au mobile money local</span>
+  </div>
+</section>
+
+<section data-label="Impact social" data-screen-label="09" data-speaker-notes="Un impact à chaque niveau. Travailleurs : visibilité, revenus, réputation. Employeurs : gain de temps et confiance. PME : accès rapide à des talents. Écosystème : formalisation progressive du travail informel." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>08 — Impact social</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">Un impact à chaque niveau</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:900px">Rabotka crée de la valeur pour chaque acteur du marché local — et organise progressivement l'informel.</p>
+  <div style="flex:1; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:46px">
+    <div class="anim-rise" style="--d:3; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:36px 30px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:auto">Travailleurs</div>
+      <div style="height:3px; width:46px; background:var(--green); margin:20px 0 18px"></div>
+      <div style="font-size:23px; line-height:1.45; color:var(--muted)">Plus de visibilité, accès à des missions et une réputation qui se construit dans la durée.</div>
+    </div>
+    <div class="anim-rise" style="--d:4; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:36px 30px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:auto">Employeurs</div>
+      <div style="height:3px; width:46px; background:var(--green); margin:20px 0 18px"></div>
+      <div style="font-size:23px; line-height:1.45; color:var(--muted)">Gain de temps, incertitude réduite et accès à des profils plus fiables.</div>
+    </div>
+    <div class="anim-rise" style="--d:5; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:36px 30px; display:flex; flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:auto">PME</div>
+      <div style="height:3px; width:46px; background:var(--green); margin:20px 0 18px"></div>
+      <div style="font-size:23px; line-height:1.45; color:var(--muted)">Trouver rapidement du personnel ponctuel ou récurrent, sans agence coûteuse.</div>
+    </div>
+    <div class="anim-rise" style="--d:6; background:var(--green-dark); border-radius:24px; padding:36px 30px; display:flex; flex-direction:column; position:relative; overflow:hidden">
+      <div class="chev" style="position:absolute; inset:0; opacity:.07; pointer-events:none"></div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:auto; color:#fff; position:relative">Écosystème</div>
+      <div style="height:3px; width:46px; background:var(--green-light); margin:20px 0 18px; position:relative"></div>
+      <div style="font-size:23px; line-height:1.45; color:rgba(255,255,255,.84); position:relative">Formalisation progressive des services informels grâce à la donnée et à la réputation.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Scaling" data-screen-label="10" data-speaker-notes="Cinq phases de croissance. Brazzaville d'abord ; puis les catégories à forte demande ; les partenariats PME, écoles, ONG ; l'expansion vers d'autres villes ; enfin une plateforme carrière complète." style="background:var(--paper); font-family:Manrope,sans-serif; color:var(--ink); padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column">
+  <div class="eye anim" style="--d:0"><span></span>09 — Déploiement</div>
+  <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:var(--t-h); line-height:1.06; letter-spacing:-.02em; margin:24px 0 6px">Cinq phases de croissance</h2>
+  <p class="anim" style="--d:2; font-size:var(--t-body); color:var(--muted); max-width:900px">Prouver le modèle à Brazzaville, puis l'étendre par la demande réelle et les partenariats.</p>
+  <div style="flex:1; display:flex; align-items:center; margin-top:20px">
+    <div style="width:100%; display:grid; grid-template-columns:repeat(5,1fr); gap:20px; align-items:end">
+      <div style="display:flex; flex-direction:column; gap:18px"><div style="height:120px; background:var(--tint); border-radius:16px 16px 0 0; display:flex; align-items:flex-end"><div class="anim-bar" style="--d:0; height:34%; width:100%; background:var(--green); border-radius:16px 16px 0 0"></div></div><div class="anim" style="--d:3; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:var(--green)">Phase 1</div><div class="anim" style="--d:3; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px">Brazzaville</div><div class="anim" style="--d:3; font-size:21px; color:var(--muted); line-height:1.4">Noyau de travailleurs vérifiés, premières missions de qualité.</div></div>
+      <div style="display:flex; flex-direction:column; gap:18px"><div style="height:120px; background:var(--tint); border-radius:16px 16px 0 0; display:flex; align-items:flex-end"><div class="anim-bar" style="--d:1; height:50%; width:100%; background:var(--green); border-radius:16px 16px 0 0"></div></div><div class="anim" style="--d:4; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:var(--green)">Phase 2</div><div class="anim" style="--d:4; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px">Catégories clés</div><div class="anim" style="--d:4; font-size:21px; color:var(--muted); line-height:1.4">Élargir aux services à forte demande, étape par étape.</div></div>
+      <div style="display:flex; flex-direction:column; gap:18px"><div style="height:120px; background:var(--tint); border-radius:16px 16px 0 0; display:flex; align-items:flex-end"><div class="anim-bar" style="--d:2; height:66%; width:100%; background:var(--green); border-radius:16px 16px 0 0"></div></div><div class="anim" style="--d:5; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:var(--green)">Phase 3</div><div class="anim" style="--d:5; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px">Partenariats</div><div class="anim" style="--d:5; font-size:21px; color:var(--muted); line-height:1.4">PME, écoles, ONG et programmes d'insertion.</div></div>
+      <div style="display:flex; flex-direction:column; gap:18px"><div style="height:120px; background:var(--tint); border-radius:16px 16px 0 0; display:flex; align-items:flex-end"><div class="anim-bar" style="--d:3; height:82%; width:100%; background:var(--green); border-radius:16px 16px 0 0"></div></div><div class="anim" style="--d:6; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:var(--green)">Phase 4</div><div class="anim" style="--d:6; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px">Multi-villes</div><div class="anim" style="--d:6; font-size:21px; color:var(--muted); line-height:1.4">Réplication vers d'autres villes africaines.</div></div>
+      <div style="display:flex; flex-direction:column; gap:18px"><div style="height:120px; background:var(--green-dark); border-radius:16px 16px 0 0; display:flex; align-items:flex-end"><div class="anim-bar" style="--d:4; height:100%; width:100%; background:var(--green-dark); border-radius:16px 16px 0 0"></div></div><div class="anim" style="--d:7; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:var(--green-deep)">Phase 5</div><div class="anim" style="--d:7; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px">Plateforme carrière</div><div class="anim" style="--d:7; font-size:21px; color:var(--muted); line-height:1.4">Emploi, talents, services et carrières réunis.</div></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Vision" data-screen-label="11" data-speaker-notes="La vision : faire de Rabotka la plateforme de référence du recrutement en Afrique francophone. D'abord le secteur informel, puis l'emploi et les services, puis les talents et les carrières." style="position:relative; background:var(--green-darker); font-family:Manrope,sans-serif; color:#fff; padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column; justify-content:center; overflow:hidden">
+  <div class="chev" style="position:absolute; inset:0; opacity:.06; pointer-events:none"></div>
+  <div style="position:absolute; bottom:-280px; left:-140px; width:760px; height:760px; border-radius:50%; background:radial-gradient(circle, rgba(22,193,82,.32), transparent 62%); pointer-events:none"></div>
+  <div style="position:relative; z-index:1; max-width:1300px">
+    <div class="eye on-dark anim" style="--d:0"><span></span>10 — Vision</div>
+    <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:62px; line-height:1.07; letter-spacing:-.025em; margin:28px 0 36px">La plateforme de référence pour l'emploi <span style="color:var(--green-light)">en Afrique francophone.</span></h2>
+    <div class="anim" style="--d:2; display:flex; align-items:center; gap:20px; flex-wrap:wrap">
+      <span style="font-size:25px; font-weight:600; padding:16px 30px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18)">Secteur informel</span>
+      <span style="width:15px; height:15px; border-top:3px solid var(--green-light); border-right:3px solid var(--green-light); transform:rotate(45deg)"></span>
+      <span style="font-size:25px; font-weight:600; padding:16px 30px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18)">Emploi &amp; services</span>
+      <span style="width:15px; height:15px; border-top:3px solid var(--green-light); border-right:3px solid var(--green-light); transform:rotate(45deg)"></span>
+      <span style="font-size:25px; font-weight:700; padding:16px 30px; border-radius:999px; background:var(--green); color:#fff">Talents &amp; carrières</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Appel à l'action" data-screen-label="12" data-speaker-notes="Message final : Rabotka ne crée pas seulement une application — Rabotka organise un marché qui existe déjà. Investir, accompagner ou rejoindre Rabotka, c'est construire une infrastructure locale pour l'emploi, la confiance et l'avenir du travail en Afrique." style="position:relative; background:var(--green-darker); font-family:Manrope,sans-serif; color:#fff; padding:var(--pad-y) var(--pad-x); display:flex; flex-direction:column; justify-content:space-between; overflow:hidden">
+  <div class="chev" style="position:absolute; inset:0; opacity:.06; pointer-events:none"></div>
+  <div style="position:absolute; top:-260px; right:-160px; width:720px; height:720px; border-radius:50%; background:radial-gradient(circle, rgba(22,193,82,.32), transparent 62%); pointer-events:none"></div>
+  <div style="position:relative; z-index:1; display:flex; align-items:center; gap:16px">
+    <img src="assets/rabotka-logo.png" alt="Rabotka" style="width:54px; height:54px; object-fit:contain">
+    <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px">Rabotka</span>
+  </div>
+  <div style="position:relative; z-index:1; max-width:1320px">
+    <h2 class="anim" style="--d:1; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:60px; line-height:1.1; letter-spacing:-.025em; margin-bottom:30px">Rabotka n'est pas seulement une application.<br><span style="color:var(--green-light)">Rabotka organise un marché qui existe déjà.</span></h2>
+    <p class="anim" style="--d:2; font-size:28px; line-height:1.5; color:rgba(255,255,255,.82); max-width:1040px">Investir, accompagner ou rejoindre Rabotka, c'est construire une infrastructure locale pour l'emploi, la confiance et l'avenir du travail en Afrique.</p>
+  </div>
+  <div class="anim" style="--d:3; position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between">
+    <div style="display:flex; gap:16px">
+      <span style="font-size:24px; font-weight:700; padding:15px 34px; border-radius:999px; background:var(--green); color:#fff">Investir</span>
+      <span style="font-size:24px; font-weight:600; padding:15px 34px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18)">Accompagner</span>
+      <span style="font-size:24px; font-weight:600; padding:15px 34px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18)">Rejoindre</span>
+    </div>
+    <div style="font-size:22px; color:rgba(255,255,255,.6)">Brazzaville · République du Congo</div>
+  </div>
+</section>
+
+</x-import>
+</x-dc>
+<script>
+  // Press "s" to toggle the thumbnail rail. Mirrors the deck-stage rail
+  // state in localStorage ('deck-stage.railVisible': '1' visible / '0' hidden,
+  // default visible) and drives the toggle via the documented postMessage.
+  (function () {
+    function railVisible() {
+      try { return localStorage.getItem('deck-stage.railVisible') !== '0'; }
+      catch (e) { return true; }
+    }
+    window.addEventListener('keydown', function (e) {
+      if (e.key !== 's' && e.key !== 'S') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      e.preventDefault();
+      window.postMessage({ type: '__deck_rail_visible', on: !railVisible() }, '*');
+    });
+  })();
+</script>
+</body>
+</html>
